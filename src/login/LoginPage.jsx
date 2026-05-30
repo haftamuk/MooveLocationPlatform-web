@@ -11,6 +11,7 @@ import {
   IconButton,
   Tooltip,
   InputAdornment,
+  Typography,
 } from '@mui/material';
 import CountryFlag from 'react-country-flag';
 import { makeStyles } from 'tss-react/mui';
@@ -202,6 +203,9 @@ const LoginPage = () => {
         {useMediaQuery(theme.breakpoints.down('lg')) && (
           <LogoImage color={theme.palette.primary.main} />
         )}
+        <Typography variant="h4" align="center" gutterBottom>
+          Moove Location Platform
+        </Typography>
         {!openIdForced && (
           <>
             <TextField
