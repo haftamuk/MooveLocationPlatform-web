@@ -68,6 +68,19 @@ const useStyles = makeStyles()((theme) => ({
   flag: {
     marginRight: theme.spacing(1),
   },
+  footerLinks: {
+    marginTop: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'center',
+    gap: theme.spacing(2),
+    flexWrap: 'wrap',
+    '& a': {
+      fontSize: '0.75rem',
+    },
+  },
+  languageSelector: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const LoginPage = () => {
@@ -167,44 +180,13 @@ const LoginPage = () => {
 
   return (
     <LoginLayout>
-      <div className={classes.options}>
-        {nativeEnvironment && changeEnabled && (
-          <IconButton color="primary" onClick={() => navigate('/change-server')}>
-            <Tooltip
-              title={`${t('settingsServer')}: ${window.location.hostname}`}
-              open={showServerTooltip}
-              arrow
-            >
-              <VpnLockIcon />
-            </Tooltip>
-          </IconButton>
-        )}
-        {!nativeEnvironment && (
-          <IconButton color="primary" onClick={() => setShowQr(true)}>
-            <QrCode2Icon />
-          </IconButton>
-        )}
-        {languageEnabled && (
-          <FormControl>
-            <Select value={language} onChange={(e) => setLocalLanguage(e.target.value)}>
-              {languageList.map((it) => (
-                <MenuItem key={it.code} value={it.code}>
-                  <span className={classes.flag}>
-                    <CountryFlag countryCode={it.country} svg />
-                  </span>
-                  {it.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
-      </div>
+
       <div className={classes.container}>
         {useMediaQuery(theme.breakpoints.down('lg')) && (
           <LogoImage color={theme.palette.primary.main} />
         )}
         <Typography variant="h4" align="center" gutterBottom>
-          Moove Location Platform
+          Moove Fleet Platform
         </Typography>
         {!openIdForced && (
           <>
@@ -296,17 +278,28 @@ const LoginPage = () => {
             )}
           </div>
         )}
+        {/* Footer Links */}
+        <div className={classes.footerLinks}>
+          <Link href="/about.html">About Us</Link>
+          <Link href="/contact.html">Contact</Link>
+          <Link href="/privacy.html">Privacy Policy</Link>
+          <Link href="/terms.html">Terms of Service</Link>
+        </div>
+        {languageEnabled && (
+          <FormControl className={classes.languageSelector} fullWidth>
+            <Select value={language} onChange={(e) => setLocalLanguage(e.target.value)}>
+              {languageList.map((it) => (
+                <MenuItem key={it.code} value={it.code}>
+                  <span className={classes.flag}>
+                    <CountryFlag countryCode={it.country} svg />
+                  </span>
+                  {it.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        )}
       </div>
-      <QrCodeDialog open={showQr} onClose={() => setShowQr(false)} />
-      <Snackbar
-        open={!!announcement && !announcementShown}
-        message={announcement}
-        action={
-          <IconButton size="small" color="inherit" onClick={() => setAnnouncementShown(true)}>
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        }
-      />
     </LoginLayout>
   );
 };

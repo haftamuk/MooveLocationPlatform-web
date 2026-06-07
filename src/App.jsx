@@ -1,3 +1,4 @@
+import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery, useTheme } from '@mui/material';
@@ -37,6 +38,16 @@ const App = () => {
   const newServer = useSelector((state) => state.session.server.newServer);
   const termsUrl = useSelector((state) => state.session.server.attributes.termsUrl);
   const user = useSelector((state) => state.session.user);
+
+  // Dynamic document title
+  const serverTitle = useSelector((state) => state.session.server?.attributes?.title);
+  React.useEffect(() => {
+    if (serverTitle) {
+      document.title = serverTitle;
+    } else {
+      document.title = 'Moove Fleet Management Platform';
+    }
+  }, [serverTitle]);
 
   const acceptTerms = useCatch(async () => {
     const response = await fetchOrThrow(`/api/users/${user.id}`, {
